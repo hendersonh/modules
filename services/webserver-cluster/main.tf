@@ -140,9 +140,14 @@ resource "aws_security_group_rule" "allow_all_outbound" {
 }
 
 data "terraform_remote_state" "db" {
-  backend = "local"  
+  backend = "remote"
+  config = {
+    organization = "${var.organization}"
+    workspaces = {
+      name = "${var.workspaces}" 
+    }
+  }
 }
-
 locals {
   http_port    = 80
   any_port     = 0

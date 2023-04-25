@@ -8,17 +8,15 @@ variable "cluster_name" {
   type        = string
 }
 
-/*
-variable "db_remote_state_bucket" {
-  description = "The name of the S3 bucket for the database's remote state"
+variable "organization" {
+  description = "organization name in Cloud"
   type        = string
 }
 
-variable "db_remote_state_key" {
-  description = "The path for the database's remote state in S3"
+variable "workspace" {
+  description = "Workspace need in the the Cloud"
   type        = string
 }
-*/
 
 variable "instance_type" {
   description = "The type of EC2 Instances to run (e.g. t2.micro)"
