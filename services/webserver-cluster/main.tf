@@ -16,10 +16,8 @@ resource "aws_launch_configuration" "example" {
 
   user_data = templatefile("${path.module}/user-data.sh", {
     server_port = var.server_port
-    //db_address  = data.terraform_remote_state.db.outputs.address
-    db_address = "hendersonohood.com"
-    db_port = 10
-    //db_port     = data.terraform_remote_state.db.outputs.port
+    db_address  = data.terraform_remote_state.db.outputs.address
+    db_port     = data.terraform_remote_state.db.outputs.port
   })
 
   # Required when using a launch configuration with an auto scaling group.
