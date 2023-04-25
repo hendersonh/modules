@@ -139,6 +139,7 @@ resource "aws_security_group_rule" "allow_all_outbound" {
   cidr_blocks = local.all_ips
 }
 
+/*
 data "terraform_remote_state" "db" {
   backend = "s3"
 
@@ -148,6 +149,7 @@ data "terraform_remote_state" "db" {
     region = "us-east-2"
   }
 }
+*/
 
 locals {
   http_port    = 80
