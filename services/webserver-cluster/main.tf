@@ -140,7 +140,7 @@ resource "aws_security_group_rule" "allow_all_outbound" {
 }
 
 data "terraform_remote_state" "db" {
-  backend = local  
+  backend = "local"  
 }
 
 locals {
