@@ -21,6 +21,7 @@ variable "workspace" {
 variable "instance_type" {
   description = "The type of EC2 Instances to run (e.g. t2.micro)"
   type        = string
+  default     = "t1.micro"
 }
 
 variable "min_size" {
