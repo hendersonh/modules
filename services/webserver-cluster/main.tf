@@ -144,7 +144,7 @@ data "terraform_remote_state" "db" {
   config = {
     organization = "${var.organization}"
     workspaces = {
-      name = "${var.workspaces}" 
+      name = "${var.workspace}" 
     }
   }
 }
