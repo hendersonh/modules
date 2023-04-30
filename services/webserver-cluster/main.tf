@@ -1,16 +1,5 @@
-terraform {
-  required_version = ">= 1.0.0, < 2.0.0"
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.0"
-    }
-  }
-}
-
 resource "aws_launch_configuration" "example" {
-  image_id        = "ami-068f27965379d536b"
+  image_id        = var.ami
   instance_type   = var.instance_type
   security_groups = [aws_security_group.instance.id]
 
@@ -19,7 +8,7 @@ resource "aws_launch_configuration" "example" {
     //db_address  = data.terraform_remote_state.db.outputs.address
     //db_port     = data.terraform_remote_state.db.outputs.port
     db_address = "henderson.hood.com"
-    db_port  =  "5858"
+    db_port    = "5858"
   })
 
   # Required when using a launch configuration with an auto scaling group.
@@ -47,8 +36,8 @@ resource "aws_autoscaling_group" "example" {
     for_each = var.custom_tags
 
     content {
-      key = tag.key
-      value = tag.value
+      key                 = tag.key
+      value               = tag.value
       propagate_at_launch = true
     }
   }
@@ -78,9 +67,9 @@ resource "aws_lb" "example" {
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.example.arn
 
-  port              = local.http_port
+  port = local.http_port
 
-  protocol          = "HTTP"
+  protocol = "HTTP"
 
   # By default, return a simple 404 page
   default_action {
@@ -156,7 +145,7 @@ data "terraform_remote_state" "db" {
   config = {
     organization = "${var.organization}"
     workspaces = {
-      name = "${var.workspace}" 
+      name = "${var.workspace}"
     }
   }
 }
@@ -177,5 +166,25 @@ data "aws_subnets" "default" {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
   }
+}
+
+resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
+  count                  = var.enable_autoscaling ? 1 : 0
+  scheduled_action_name  = "${var.cluster_name}-scale-out-duringbusiness-hours"
+  min_size               = 2
+  max_size               = 10 
+  desired_capacity       = 4
+  recurrence             = "0 9 * * *"
+  autoscaling_group_name = aws_autoscaling_group.example.name
+}
+
+resource "aws_autoscaling_schedule" "scale_in_at_night" {
+  count                  = var.enable_autoscaling ? 1 : 0
+  scheduled_action_name  = "${var.cluster_name}-scale-in-atnight"
+  min_size               = 2
+  max_size               = 10
+  desired_capacity       = 2
+  recurrence             = "0 17 * * *"
+  autoscaling_group_name = aws_autoscaling_group.example.name
 }
 
