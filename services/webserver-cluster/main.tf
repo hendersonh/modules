@@ -140,7 +140,7 @@ resource "aws_security_group_rule" "allow_all_outbound" {
   protocol    = local.any_protocol
   cidr_blocks = local.all_ips
 }
-
+/*
 data "terraform_remote_state" "db" {
   backend = "remote"
   config = {
@@ -150,6 +150,8 @@ data "terraform_remote_state" "db" {
     }
   }
 }
+*/
+
 locals {
   http_port    = 80
   any_port     = 0
