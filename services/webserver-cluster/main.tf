@@ -8,6 +8,7 @@ resource "aws_launch_configuration" "example" {
     //db_address  = data.terraform_remote_state.db.outputs.address
     //db_port     = data.terraform_remote_state.db.outputs.port
     db_address = "henderson.hood.com"
+    server_text = var.server_port
     db_port    = "5858"
   })
 
