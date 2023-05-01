@@ -53,6 +53,7 @@ resource "aws_autoscaling_group" "example" {
       propagate_at_launch = true
     }
   }
+}
 
 resource "aws_security_group" "instance" {
   name = "${var.cluster_name}-instance"
